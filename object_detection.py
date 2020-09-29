@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-
 import sys
 import time
 import numpy as np
@@ -86,7 +85,7 @@ if __name__ == "__main__":
     #fourcc = cv2.VideoWriter_fourcc(*'XVID')
     #out = cv2.VideoWriter('output2.avi', fourcc, 15.0, (640,480))
 
-    fcount = 0
+    #fcount = 0
 
     while True:
         start = time.time()
@@ -100,7 +99,7 @@ if __name__ == "__main__":
 
         (boxes, scores, classes, num_detections) = tDetector.run(image)
         
-        #To show classes and scores
+        #To show all classes and scores
         vis_util.visualize_boxes_and_labels_on_image_array(
             image,
             np.squeeze(boxes),
@@ -109,15 +108,37 @@ if __name__ == "__main__":
             category_index,
             use_normalized_coordinates=True,
             line_thickness=2)
+        
+        #To show only 1 object, for example: person or class 1
+        '''
+        boxes = np.squeeze(boxes)
+        scores = np.squeeze(scores)
+        classes = np.squeeze(classes)
 
+        idx = np.argwhere(classes == 1) #only person
+        bb = np.squeeze(boxes[idx])
+        ss = np.squeeze(scores[idx])
+        cc = np.squeeze(classes[idx])
+        bboxes = bb[ss > 0.6]
+
+        #get image size
+        final_box = []
+        for box in bboxes:
+            ymin, xmin, ymax, xmax = box
+            cv2.rectangle(image, (int(xmin * w), int(ymin * h)), (int(xmax * w), int(ymax * h)), (0, 255, 0), 2)
+        '''
 
         fps = 1.0/(time.time()-start)
         
+        #To show FPS in frame
         #cv2.putText(image, "FPS : " + str(fps), (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 2)
+        print("FPS: ", fps)
         cv2.imshow("Object detection", image)
         #out.write(image)
 
-        fcount += 1
+        #To count frame if necessary
+        #fcount += 1
+        #print("Frame: ", fcount)
 
         k = cv2.waitKey(1) & 0xff
         if k == ord('q') or k == 27:
