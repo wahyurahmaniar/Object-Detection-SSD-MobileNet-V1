@@ -2,3 +2,4 @@
 This repository contains object detection using SSD-MobileNet V1.
 
 I use TensorFlow 2.0 and Python 3.7.4.
+Download SSD-MobileNet V1 model here: shorturl.at/cvQXZ
